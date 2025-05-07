@@ -1,0 +1,54 @@
+{
+	"name": "playwright-webdriverio",
+	"version": "0.0.1",
+	"description": "Mobile automation test framework using playwright",
+	"license": "MIT",
+	"author": "Flavio Romero",
+	"engines": {
+		"node": ">=18.20.0"
+	},
+	"tags": [
+		"playwright",
+		"webdriverio",
+		"mobile",
+		"automation",
+		"test",
+		"appium"
+	],
+	"keywords": [
+		"playwright",
+		"webdriverio",
+		"mobile",
+		"automation",
+		"test",
+		"appium"
+	],
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/flavio-arc9/playwright-webdriverio.git"
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"dev": "tsx ./src/index.ts",
+		"build": "tsc && npm run types",
+		"types": "tsc -p tsconfig.json",
+		"test": "playwright test"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.7",
+		"@wdio/spec-reporter": "^9.12.6",
+		"tsx": "^4.19.3",
+		"typescript": "~5.8.2"
+	},
+	"peerDependencies": {
+		"@playwright/test": "latest"
+	},
+	"dependencies": {
+		"expect-webdriverio": "latest",
+		"webdriverio": "latest"
+	}
+}
