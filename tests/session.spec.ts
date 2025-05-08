@@ -14,6 +14,16 @@ test.describe('Prueba de Github Appium', () => {
 
         const name = await page.innerText('.navbar__title');
         expect(name).toBe('Playwright');
+
+        let btnsearch = page.getByText('Search');
+        await btnsearch.waitFor({ state: 'visible' });
+        await btnsearch.click();
+
+        let input = page.locator('#docsearch-input');
+        await input.waitFor({ state: 'visible' });
+        await input.fill('Playwright');
+        await input.press('Enter');
+
     })
 
     test('Github Android', async ({ page, driver }) => {
@@ -22,16 +32,16 @@ test.describe('Prueba de Github Appium', () => {
         await page.locator$('//android.view.View[@resource-id="search_button"]').click();
 
         await page.locator$('//android.widget.Button[@content-desc="Show Repositories"]').click();
-    
+
         let repo_exist = await page.locator$('//android.view.View[@index=1]/android.view.View[@resource-id="repo_list"]');
         let repo_text = await repo_exist.isDisplayed();
-        
+
         expect(repo_text).toBe(true);
 
         await driver.pause(5000);
     })
 
-    test('WebdriverIO Android', async ({ page, driver,  }) => {
+    test('WebdriverIO Android', async ({ page, driver, }) => {
         const btnMenuLogin = page.locator$('~Login');
         const inputEmail = page.locator$('~input-email');
         const inputPassoword = page.locator$('~input-password');
@@ -60,7 +70,7 @@ test.describe('Prueba de Github Appium', () => {
         const text = await alert_title.getText();
         console.log("MMMM:", text);
         expect(text).toContain('Success');
-    })  
+    })
 
     test('WebdriverIO IOS', async ({ page, driver }) => {
         const btnMenuLogin = page.locator$('~Login');
@@ -70,7 +80,9 @@ test.describe('Prueba de Github Appium', () => {
         const alert_title = page.locator$('-ios predicate string:type == \'XCUIElementTypeAlert\'');
 
         await btnMenuLogin.click();
+
         await inputEmail.setValue('test@webdriver.io')
+
         await inputPassoword.setValue('Test1234!')
 
         if (await driver.isKeyboardShown()) {
@@ -90,7 +102,7 @@ test.describe('Prueba de Github Appium', () => {
 
         const text = await alert_title.getText();
         expect(text).toContain('Success');
-    })  
+    })
 
     test('WebdriverIO Android & Ios', async ({ page, driver }) => {
         //Lanzar los dos proyecto Android e IOS
@@ -115,7 +127,7 @@ test.describe('Prueba de Github Appium', () => {
             android: '~button-LOGIN',
             ios: '//XCUIElementTypeOther[@name="button-LOGIN"]'
         });
-        
+
         const alert_title = page.selector({
             android: '*//android.widget.TextView[@resource-id="android:id/alertTitle"]',
             ios: '-ios predicate string:type == \'XCUIElementTypeAlert\''
@@ -131,6 +143,50 @@ test.describe('Prueba de Github Appium', () => {
 
         await btnLogin.scrollIntoView({
             scrollableElement: await screenLogin,
+        });
+
+        await btnLogin.click();
+
+        await alert_title.waitForExist({
+            timeout: 11000,
+            reverse: !true,
+        });
+
+        const text = await alert_title.getText();
+        expect(text).toContain('Success');
+    })
+
+    test('WebdriverIO in Report Html', async ({ page, driver }) => {
+        const btnMenuLogin = await page.locator$('~Login');
+        const inputEmail = await page.locator$('~input-email');
+        const inputPassoword = await page.locator$('~input-password');
+        const btnLogin = await page.locator$("~button-LOGIN");
+        const alert_title = await page.locator$('-ios predicate string:type == \'XCUIElementTypeAlert\'');
+
+        //await wrapAsStep(btnMenuLogin.click(), { title: `$x.${btnMenuLogin.click}${(btnMenuLogin.selector)}` })();
+
+        await test.step('$x.click(~Login)', async () => {
+            return btnMenuLogin.click()
+        }, { box: true });
+
+        await inputEmail.setValue('test@webdriver.io')
+
+        // await test.step('$x.setValue(~input-email)', async () => {
+
+        // })
+
+        await inputPassoword.setValue('Test1234!')
+
+        // await test.step('$x.setValue(~input-password)', async () => {
+
+        // })
+
+        if (await driver.isKeyboardShown()) {
+            await (await page.locator$('~Login-screen')).click();
+        }
+
+        await btnLogin.scrollIntoView({
+            scrollableElement: await page.locator$('~Login-screen'),
         });
 
         await btnLogin.click();

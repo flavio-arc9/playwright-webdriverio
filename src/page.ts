@@ -36,7 +36,7 @@ const getStartSession = async (config: IORemote) => {
 }
 
 const getStopSession = async () => {
-    await test.step("Stop Automate session",
+    await test.step("Stop Automate session", 
         async () => {
             await _session.deleteSession()
         },
@@ -45,12 +45,7 @@ const getStopSession = async () => {
 }
 
 const setExtend = (driver: Context) => ({
-    locator$: (locator: string) => {
-        if (!driver) {
-            throw new Error("Driver is not initialized 2.");
-        }
-        return driver.$(locator)
-    },
+    locator$: (locator: string) => driver.$(locator),
     locator$$: (locator: string) => driver.$$(locator),
     selector: (locator: string | Selector) => {
         const selector = getSelector(driver, locator);
@@ -61,9 +56,5 @@ const setExtend = (driver: Context) => ({
         return driver.$$(selector);
     }
 });
-
-async function tess() {
-    await (await setExtend(_driver!).locator$("~Login")).click();
-}
 
 export { getStartSession, getStopSession, setExtend, getDriver };
