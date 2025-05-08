@@ -26,7 +26,7 @@ test.describe('Prueba de Github Appium', () => {
 
     })
 
-    test('Playwright Web Safari', async ({ page, driver }) => {
+    test('Playwright Web Safari and Chrome', async ({ page, driver }) => {
         await driver.url('https://playwright.dev/');
 
         await page.locator$('button[aria-label="Toggle navigation bar"]').click();  

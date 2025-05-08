@@ -67,7 +67,7 @@ export default defineConfig<TestOptions>({
             name: 'Browser Chrome Android',
             use: {
                 capabilities: {
-                    platformName: 'IOS',
+                    platformName: 'Android',
                     "appium:browserName": "Chrome",
                     "appium:automationName": "UiAutomator2"
                 }
