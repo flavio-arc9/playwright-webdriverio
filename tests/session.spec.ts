@@ -3,7 +3,7 @@ import { test } from '../src/fixture';
 
 test.describe('Prueba de Github Appium', () => {
 
-    test('Playwright Web', async ({ page }) => {
+    test('Playwright Web Browser', async ({ page }) => {
         await page.goto('https://playwright.dev/');
         await page.locator('//a[@href="/docs/intro"]').first().click();
 
@@ -24,6 +24,18 @@ test.describe('Prueba de Github Appium', () => {
         await input.fill('Playwright');
         await input.press('Enter');
 
+    })
+
+    test('Playwright Web Safari', async ({ page, driver }) => {
+        await driver.url('https://playwright.dev/');
+
+        await page.locator$('button[aria-label="Toggle navigation bar"]').click();  
+        await page.locator$('//a[@href="/docs/intro" and @class="menu__link"]').click();
+
+        await driver.pause(2000);
+
+        const name = await page.locator$('.navbar__title').getText();
+        expect(name).toBe('Playwright');
     })
 
     test('Github Android', async ({ page, driver }) => {

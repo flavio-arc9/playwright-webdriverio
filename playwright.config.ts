@@ -51,6 +51,27 @@ export default defineConfig<TestOptions>({
                     "appium:udid": "CED003A3-85B7-4780-B42E-EA5BF16DB5BB"
                 }
             }
+        },
+        {
+            name: 'Browser Safari IOS',
+            use: {
+                capabilities: {
+                    platformName: 'IOS',
+                    "appium:browserName": "Safari",
+                    "appium:automationName": "XCUITest",
+                    "appium:udid": "CED003A3-85B7-4780-B42E-EA5BF16DB5BB"
+                }
+            }
+        },
+        {
+            name: 'Browser Chrome Android',
+            use: {
+                capabilities: {
+                    platformName: 'IOS',
+                    "appium:browserName": "Chrome",
+                    "appium:automationName": "UiAutomator2"
+                }
+            }
         }
     ]
 })
