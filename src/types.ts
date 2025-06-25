@@ -3,6 +3,7 @@ import { Page as BasePage } from '@playwright/test';
 import { RequestedStandaloneCapabilities } from "@wdio/types/build/Capabilities";
 import { Browser, ChainablePromiseArray, ChainablePromiseElement } from "webdriverio";
 import { Selector } from "./selector";
+import { Session } from "./session";
 
 export type IORemote = IOConfig & {
     capabilities: IOCapabilities;
@@ -80,6 +81,8 @@ export interface TestArgs extends PlaywrightTestArgs, TestOptions {
 export type Context = Browser;
 
 export type WorkerArgs = PlaywrightWorkerArgs & PlaywrightWorkerOptions;
+
+export type IOSession = { driver: Context; session: Session } | null;
 
 export interface Page extends BasePage {
     /**

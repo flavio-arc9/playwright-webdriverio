@@ -1,11 +1,12 @@
 import { test as base, TestType } from '@playwright/test';
-import { IOCapabilities, IOConfig, IORemote, Page, TestArgs, TestOptions, WorkerArgs } from './types';
-import { setExtend, getStartSession, getDriver, getStopSession } from '.';
+import { IOCapabilities, IOConfig, IORemote, IOSession, Page, TestArgs, TestOptions, WorkerArgs } from './types';
+import { setExtend, Session } from '.';
 
 const _test = base.extend<
     TestArgs & {
         _useCapabilities: IOCapabilities;
         _useConfig: IOConfig;
+        _useSession: IOSession;
     }
 >({
     config: [
@@ -29,45 +30,61 @@ const _test = base.extend<
         { auto: true }
     ],
     driver: [
-        async ({ }, use) => {
-            const driver = getDriver();
-            await use(driver);
+        async ({ _useSession }, use) => {
+            if (!_useSession) {
+                base.skip(true, "El fixture 'driver' no está disponible para proyectos no móviles.");
+                return;
+            }
+            await use(_useSession.driver);
         },
-        { auto: false }
+        { scope: 'test' }
     ],
-    page: async ({ page, config, capabilities, baseURL }, use, devices) => {
-        const mergeConfig: IORemote = {
-            ...config,
-            capabilities: capabilities,
-            baseUrl: baseURL || config.baseUrl,
-        };
-
-        const { _session, _driver } = await getStartSession(mergeConfig);
-
-        let mergePage: Page = Object.assign(page, {
-            ...page,
-            ...setExtend(_driver),
-        });
-
-        try {
-            if (!_session) {
-                throw new Error("Session is not initialized.");
+    page: [
+        async ({ page, _useSession }, use) => {
+            if (!_useSession) {
+                await use(page);
+                return;
             }
 
-            if (!_driver) {
-                throw new Error("Driver is not initialized.");
-            }
+            const extendedPage: Page = Object.assign(page, {
+                ...setExtend(_useSession.driver),
+            });
+            await use(extendedPage);
 
-            await use(mergePage);
-        } catch (error) {
-            console.error("Error initializing session:", error);
-            throw error;
-        } finally {
-            await getStopSession();
-        }
-    },
+        }, { scope: 'test' }
+    ],
     _useConfig: [{}, { option: true }],
     _useCapabilities: [{}, { option: true }],
+    _useSession: [
+        async ({ config, capabilities, baseURL }, use) => {
+            const mergeConfig: IORemote = {
+                ...config,
+                capabilities: capabilities,
+                baseUrl: baseURL || config.baseUrl,
+            };
+
+            const session = Session.isValid(mergeConfig);
+            if (!session) {
+                await use(null);
+                return;
+            }
+
+            const driver = await base.step("Start Automate session", () => session.create(), { box: true });
+            base.info().annotations.push({
+                type: 'Session ID',
+                description: `${driver.sessionId}`,
+            });
+
+            base.info().annotations.push({
+                type: 'Automate Session',
+                description: `${JSON.stringify(mergeConfig.capabilities, null, 2)}`,
+            });
+
+            await use({ driver, session });
+
+            await base.step("Stop Automate session", () => session.deleteSession(), { box: true });
+        }, { scope: 'test' }
+    ]
 })
 
 Object.assign(_test, {

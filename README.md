@@ -5,21 +5,33 @@ Mobile automation test framework integrating Playwright with WebDriverIO.
 This plugin provides seamless integration between Playwright's powerful testing capabilities and WebDriverIO's mobile automation features via Appium. It enables you to write Playwright tests that control mobile applications on Android and iOS platforms.
 
 ## Features
-- Run Playwright tests on native mobile apps and mobile browsers
-- Use Playwright's testing syntax for element strategies with WebDriverIO's mobile features.
-- Support for both Android and iOS platforms
-- Simple configuration through Playwright config
-- Platform-specific selectors for cross-platform element selection
-- Driver availability (Browser in WebdriverIO) in Playwright fixtures
-- [Pending] Integrated Playwright Report (Steps, Trace, Image)
+- [x] Run the Playwright Native Web Browser Test
+- [x] Run Playwright tests on native mobile apps and mobile browsers
+- [x] Use Playwright's testing syntax for element strategies with WebDriverIO's mobile features.
+- [x] Support for both Android and iOS platforms
+- [x] Simple configuration through Playwright config
+- [x] Platform-specific selectors for cross-platform element selection
+- [x] Driver availability (Browser in WebdriverIO) in Playwright fixtures
+- [] Integrated Playwright Report (Steps, Trace, Image)
 
-# WebDriverIO Limitations and Modifications
+## Limitations
 To ensure smooth integration with Playwright, certain WebDriverIO features are disabled:
 
 - **WebDriverIO Lifecycle Hooks**: All WebDriverIO hooks (`before*`, `after*`, `on*`) are removed to prevent conflicts. Use Playwright's hooks instead (`beforeEach`, `afterEach`, `beforeAll`, `afterAll`).
 - **WebDriverIO Assertions**: WebDriverIO's expect library is not used. Use Playwright's built-in assertions instead.
 - **WebDriverIO Configuration**: The configuration is modified to work with Playwright's test runner and to avoid duplicate functionality.
+
+## Modifications
 - **Custom Selectors**: WebDriverIO selector strategies are adapted to provide a consistent API through the custom methods (`locator$`, `locator$$`, `selector`, and `selectors`).
+
+## Requirements
+This project uses Appium for mobile device test automation. It is necessary to configure the automation platforms:
+- [Appium Setup](docs/appium.md)
+- [Android Setup](docs/android.md)
+- [iOS Setup](docs/xcode.md)
+- [Windows Setup](docs/windows.md)
+
+> **Note for `playwright-bdd` users**: If you are using this plugin with `playwright-bdd`, it is recommended to use the `mergeTests` utility to combine the fixtures from both libraries.
 
 ## Installation
 ```sh
@@ -169,3 +181,6 @@ for (const item of await menuItems) {
   console.log(await item.getText());
 }
 ```
+
+## Utilities
+For additional helper functions and utilities, please refer to the [Utilities documentation](docs/utils.md).

@@ -1,4 +1,4 @@
-import { defineConfig } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 import { TestOptions } from "./src";
 
 export default defineConfig<TestOptions>({
@@ -31,7 +31,22 @@ export default defineConfig<TestOptions>({
     },
     projects: [
         {
-            name: 'Android',
+            name: 'Playwright Browser',
+            use: { ...devices['Desktop Chrome'] }
+        },
+        {
+            name: 'Github Android',
+            use: {
+                capabilities: {
+                    platformName: 'Android',
+                    "appium:automationName": "UiAutomator2",
+                    "appium:appPackage": "com.example.appetize",
+                    "appium:appActivity": ".MainActivity"
+                },
+            }
+        },
+        {
+            name: 'WebdriverIO Android',
             use: {
                 capabilities: {
                     platformName: 'Android',
@@ -42,7 +57,7 @@ export default defineConfig<TestOptions>({
             }
         },
         {
-            name: 'IOS',
+            name: 'WebdriverIO IOS',
             use: {
                 capabilities: {
                     platformName: 'IOS',
@@ -53,7 +68,7 @@ export default defineConfig<TestOptions>({
             }
         },
         {
-            name: 'Browser Safari IOS',
+            name: 'Safari Mobile IOS',
             use: {
                 capabilities: {
                     platformName: 'IOS',
@@ -64,7 +79,7 @@ export default defineConfig<TestOptions>({
             }
         },
         {
-            name: 'Browser Chrome Android',
+            name: 'Chrome Mobile Android',
             use: {
                 capabilities: {
                     platformName: 'Android',

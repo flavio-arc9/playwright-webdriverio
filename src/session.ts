@@ -13,10 +13,6 @@ export class Session {
             baseUrl = new URL(config.baseUrl);
         }
 
-        if (!config.capabilities || Object.keys(config.capabilities).length === 0) {
-            throw new Error('Capabilities are required and cannot be empty');
-        }
-
         this.config = {
             ...config,
             protocol: config.protocol || baseUrl.protocol.slice(0, -1),
@@ -24,6 +20,14 @@ export class Session {
             port: config.port || parseInt(baseUrl.port, 10),
             logLevel: config.logLevel || 'error',
         };
+    }
+
+    static isValid(config: IORemote): Session | null {
+        if (!config.capabilities || Object.keys(config.capabilities).length === 0) {
+            console.log("Skipping session: No capabilities provided.");
+            return null;
+        }
+        return new Session(config);
     }
 
     async create() {
