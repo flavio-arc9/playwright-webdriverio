@@ -1,5 +1,36 @@
-# Playwright-WebDriverIO
-Mobile automation test framework integrating Playwright with WebDriverIO.
+# [DEPRECATED] Playwright-WebDriverIO
+
+> **⚠️ Este paquete está DEPRECAD0 y ARCHIVADO.**  
+> Por favor, migra a [`playwright-io`](https://github.com/fromeroc9/playwright-io) para continuar recibiendo soporte, actualizaciones y nuevas funcionalidades.
+
+## 🚀 Migración a `playwright-io`
+
+`playwright-webdriverio` ha sido oficialmente reemplazado por [`playwright-io`](https://github.com/fromeroc9/playwright-io).  
+Todas las nuevas características, soporte y mejoras se encuentran únicamente en `playwright-io`.
+
+### ¿Por qué migrar?
+- Integración más robusta y moderna con Playwright y WebDriverIO
+- Mejor soporte para automatización móvil nativa y de navegador
+- Nuevas capacidades de grabación, reporte y manejo de sesiones
+- Documentación actualizada y comunidad activa
+
+### Pasos para migrar
+1. Desinstala el paquete anterior:
+   ```bash
+   npm uninstall playwright-webdriverio
+   ```
+2. Instala el nuevo paquete:
+   ```bash
+   npm install playwright-io --save-dev
+   ```
+3. Revisa la [documentación oficial](https://github.com/fromeroc9/playwright-io) para adaptar tu configuración y código de pruebas.
+
+¿Dudas o problemas? Abre un [issue en GitHub](https://github.com/fromeroc9/playwright-io/issues).
+
+---
+
+> **Nota:** El contenido restante de este README es solo para referencia histórica.  
+> Se recomienda migrar lo antes posible para evitar problemas de compatibilidad y aprovechar las mejoras del nuevo
 
 ## Overview
 This plugin provides seamless integration between Playwright's powerful testing capabilities and WebDriverIO's mobile automation features via Appium. It enables you to write Playwright tests that control mobile applications on Android and iOS platforms.
